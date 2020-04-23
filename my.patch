@@ -1,0 +1,44 @@
+diff --git a/lisp/files.el b/lisp/files.el
+index beafdaca99..5d3fad753e 100644
+--- a/lisp/files.el
++++ b/lisp/files.el
+@@ -2266,24 +2266,6 @@ find-file-noselect
+ 			   (revert-buffer t t)))))
+ 	      (with-current-buffer buf
+ 
+-		;; Check if a formerly read-only file has become
+-		;; writable and vice versa, but if the buffer agrees
+-		;; with the new state of the file, that is ok too.
+-		(let ((read-only (not (file-writable-p buffer-file-name))))
+-		  (unless (or nonexistent
+-			      (eq read-only buffer-file-read-only)
+-			      (eq read-only buffer-read-only))
+-		    (when (or nowarn
+-			      (let* ((new-status
+-				      (if read-only "read-only" "writable"))
+-				     (question
+-				      (format "File %s is %s on disk.  Make buffer %s, too? "
+-					      buffer-file-name
+-					      new-status new-status)))
+-				(y-or-n-p question)))
+-		      (setq buffer-read-only read-only)))
+-		  (setq buffer-file-read-only read-only))
+-
+ 		(unless (or (eq (null rawfile) (null find-file-literally))
+ 			    nonexistent
+ 			    ;; It is confusing to ask whether to visit
+diff --git a/lisp/minibuffer.el b/lisp/minibuffer.el
+index 3c8202c7eb..e0eed062ce 100644
+--- a/lisp/minibuffer.el
++++ b/lisp/minibuffer.el
+@@ -1260,9 +1260,7 @@ completion--do-completion
+              (t
+               (if (and (eq this-command last-command) completion-auto-help)
+                   (minibuffer-completion-help beg end))
+-              (completion--done completion 'exact
+-                                (unless expect-exact
+-                                  "Complete, but not unique"))))
++              ))
+ 
+             (minibuffer--bitset completed t exact))))))))
+ 
