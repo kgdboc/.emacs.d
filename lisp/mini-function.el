@@ -1,3 +1,14 @@
+(defun kill-and-reopen nil
+  (interactive)
+  (kill-current-buffer)
+  (reopen-killed-file))
+
+(defun create-scratch-buffer nil
+         "create a scratch buffer"
+                (interactive)
+                       (switch-to-buffer (get-buffer-create "*scratch*"))
+                              (lisp-interaction-mode)) 
+
 (defun scroll-up-half () (interactive) (scroll-up (window-half-height)))
 (defun kill-all-buffers () (interactive)
   (mapc 'kill-buffer (buffer-list))

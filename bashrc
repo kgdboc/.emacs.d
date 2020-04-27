@@ -1,7 +1,7 @@
 alias z="trans :zh"
 alias e="trans"
 
-source /etc/profile.d/alias.sh
+source /etc/profile.d/my.sh
 source ~/.bashrc
 
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]

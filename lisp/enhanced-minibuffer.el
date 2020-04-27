@@ -24,6 +24,10 @@
   (minibuffer-with-setup-hook #'minibuffer-completion-help 
     (call-interactively #'find-file)))
 
+(defun bookmark-jump-complete ()
+  (interactive)
+  (minibuffer-with-setup-hook #'minibuffer-complete (call-interactively #'bookmark-jump)))
+
 (defun minibuffer-set-key ()
   (defun minibuffer-alt-del () 
     (interactive)
@@ -56,6 +60,7 @@
 (global-set-key (kbd "C-x M-f") 'find-file-root-dir)
 (global-set-key (kbd "C-x b") 'switch-to-buffer-complete)
 (global-set-key (kbd "M-i") 'imenu-complete)
+(global-set-key (kbd "C-x r b") 'bookmark-jump-complete)
 
 (defun completion-list-mode-bind-key ()
   (interactive)

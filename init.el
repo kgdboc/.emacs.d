@@ -13,11 +13,12 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "<f1>") 'delete-other-windows)
 (global-set-key (kbd "<f2>") 'delete-window)
-(global-set-key (kbd "<f3>") 'save-buffer)
+(global-set-key (kbd "<f3>") 'other-window)
 (global-set-key (kbd "<f4>") 'switch-swap-buffer)
 (global-set-key (kbd "<f5>") 'reset-undo)
+(global-set-key (kbd "<f6>") 'kill-and-reopen)
 (global-set-key (kbd "<f8>") 'highlight-symbol-at-point-toggle)
-(global-set-key (kbd "<f9>") 'other-window)
+(global-set-key (kbd "<f9>") 'search-selection)
 (global-set-key (kbd "<f10>") 'tmm-menubar)
 (global-set-key (kbd "<f11>") 'save-buffer)
 (global-set-key (kbd "<f12>") 'kill-current-buffer)
@@ -29,6 +30,7 @@
 (global-set-key (kbd "C-x C-h") 'recentf-open-files)
 (global-set-key (kbd "C-x C-o") 'kill-other-buffers)
 (global-set-key (kbd "C-x C-k") 'kill-all-buffers)
+(global-set-key (kbd "C-x C-c") 'delete-frame)
 (global-set-key (kbd "C-c o") 'ff-find-other-file)
 (global-set-key (kbd "C-c h") 'highlight-selection)
 (global-set-key (kbd "C-c s") 'shell)
@@ -133,12 +135,6 @@
                            'self-insert-command))) 'delete-completion-window)))
 (add-hook 'after-make-frame-functions (lambda (frame) (when (display-graphic-p 
                            frame) (set-frame-parameter frame 'undecorated t))))
-
-(defun create-scratch-buffer nil
-       "create a scratch buffer"
-       (interactive)
-       (switch-to-buffer (get-buffer-create "*scratch*"))
-       (lisp-interaction-mode))  
 
 
 (custom-set-variables
