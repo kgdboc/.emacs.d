@@ -2,6 +2,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+(require 'delete)
 (require 'hi-lock)
 (require 'mini-function)
 (require 'enhanced-minibuffer)
@@ -17,7 +18,7 @@
 (global-set-key (kbd "<f4>") 'switch-swap-buffer)
 (global-set-key (kbd "<f5>") 'reset-undo)
 (global-set-key (kbd "<f6>") 'kill-and-reopen)
-(global-set-key (kbd "<f8>") 'highlight-symbol-at-point-toggle)
+(global-set-key (kbd "<f8>") 'highlight-regexp)
 (global-set-key (kbd "<f9>") 'search-selection)
 (global-set-key (kbd "<f10>") 'tmm-menubar)
 (global-set-key (kbd "<f11>") 'save-buffer)
@@ -52,8 +53,8 @@
 (global-set-key (kbd "<end>") 'end-of-buffer)
 (global-set-key [mouse-2] 'keyboard-escape-quit)
 (global-set-key [mouse-3] 'highlight-symbol-at-point-toggle)
-(global-set-key [C-mouse-4] 'previous-error)
-(global-set-key [C-mouse-5] 'next-error)
+(global-set-key (kbd "<C-mouse-4>") 'text-scale-increase)
+(global-set-key (kbd "<C-mouse-5>") 'text-scale-decrease)
 (global-set-key (kbd "<XF86Favorites>") 'next-error)
 (global-set-key (kbd "<s-XF86Mail>") '(lambda () (interactive) (shell-command
                                                     "xdotool key alt+period")))
