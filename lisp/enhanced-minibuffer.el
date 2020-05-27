@@ -56,4 +56,19 @@
 (global-set-key (kbd "M-i") 'imenu-complete)
 (global-set-key (kbd "C-x r b") 'bookmark-jump-complete)
 
+
+
+(defun completion-list-mode-bind-key ()
+  (interactive)
+  (choose-completion)
+  (let ((x (minibuffer-prompt)))
+    (cond
+      ((string= "Index item: " x) (shell-command "xdotool key ctrl+l && xdotool key ctrl+l"))
+      ((string= "Find file: " x) (shell-command "xdotool key Tab"))
+      ((string-match-p "Switch to buffer " x) (shell-command "xdotool key ctrl+x && xdotool key l")))))
+
+(add-hook 'completion-list-mode-hook (lambda () 
+  (local-set-key (kbd "RET") 'completion-list-mode-bind-key)
+  (local-set-key [mouse-1] 'completion-list-mode-bind-key)))
+
 (provide 'enhanced-minibuffer)

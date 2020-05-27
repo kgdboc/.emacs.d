@@ -110,7 +110,6 @@
 (setq next-screen-context-lines 1)
 (setq auto-save-list-file-prefix nil)
 (setq enable-recursive-minibuffers t)
-(setq mouse-1-click-follows-link nil)
 (setq mode-line-in-non-selected-windows nil)
 (setq read-file-name-completion-ignore-case t)
 (setq scroll-step 1 scroll-conservatively  10000)
@@ -136,6 +135,7 @@
                            'self-insert-command))) 'delete-completion-window)))
 (add-hook 'after-make-frame-functions (lambda (frame) (when (display-graphic-p 
                            frame) (set-frame-parameter frame 'undecorated t))))
+(add-hook 'completion-list-mode-hook '(lambda () (setq-local mouse-1-click-follows-link nil)))
 
 
 (custom-set-variables
