@@ -10,6 +10,7 @@
 (require 'move-lines)
 (require 'goto-last-change)
 (require 'reopen-killed-file)
+;; (require 'kernel-coding-style)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "<f1>") 'delete-other-windows)
@@ -51,8 +52,11 @@
                                    (universal-argument) (set-mark-command 0))))
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
-(global-set-key [mouse-2] 'keyboard-escape-quit)
+(global-set-key [double-mouse-1] 'ggtags-find-tag-dwim)
+(global-set-key [mouse-2] 'xref-pop-marker-stack)
 (global-set-key [mouse-3] 'highlight-symbol-at-point-toggle)
+(global-set-key [mouse-8] 'next-error)
+(global-set-key [mouse-9] 'previous-error)
 (global-set-key (kbd "<C-mouse-4>") 'text-scale-increase)
 (global-set-key (kbd "<C-mouse-5>") 'text-scale-decrease)
 (global-set-key (kbd "<XF86Favorites>") 'next-error)
@@ -121,7 +125,9 @@
 
 
 (setq-default case-fold-search t)
-(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode t)
+(setq-default tab-width 8) ; Assuming you want your tabs to be four spaces wide
+(defvaralias 'c-basic-offset 'tab-width)
 (setq-default mode-line-format (list '((buffer-file-name "%f" (dired-directory
           dired-directory "%b"))  " (%l,%c)" vc-mode " " mode-line-misc-info)))
 
@@ -129,10 +135,6 @@
 (add-hook 'Man-mode-hook 'delete-window)
 (add-hook 'c-mode-common-hook (lambda () (ggtags-mode)))
 (add-hook 'find-file-hook (lambda () (my-count-lines)))
-(add-hook 'completion-list-mode (lambda () (local-set-key (kbd "C-g")
-(add-hook 'ggtags-global-mode-hook '(lambda () (toggle-truncate-lines)))
-(add-hook 'c-mode-hook (lambda () (local-set-key (kbd "TAB") 
-                           'self-insert-command))) 'delete-completion-window)))
 (add-hook 'after-make-frame-functions (lambda (frame) (when (display-graphic-p 
                            frame) (set-frame-parameter frame 'undecorated t))))
 (add-hook 'completion-list-mode-hook '(lambda () (setq-local mouse-1-click-follows-link nil)))
@@ -152,3 +154,5 @@
  '(anzu-mode-line ((t nil)))
  '(font-lock-function-name-face ((t nil)))
  '(minibuffer-prompt ((t nil))))
+
+(setq ggtags-update-on-save nil)
