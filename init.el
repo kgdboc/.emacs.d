@@ -10,7 +10,6 @@
 (require 'move-lines)
 (require 'goto-last-change)
 (require 'reopen-killed-file)
-;; (require 'kernel-coding-style)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 (global-set-key (kbd "<f1>") 'delete-other-windows)
@@ -48,28 +47,17 @@
 (global-set-key (kbd "M-v") 'scroll-down-half)
 (global-set-key (kbd "M-c") 'shell-command)
 (global-set-key (kbd "M-e") 'eval-region-mark)
-(global-set-key (kbd "<M-left>") (lambda () (interactive) (progn 
-                                   (universal-argument) (set-mark-command 0))))
 (global-set-key (kbd "<home>") 'beginning-of-buffer)
 (global-set-key (kbd "<end>") 'end-of-buffer)
-(global-set-key [double-mouse-1] 'ggtags-find-tag-dwim)
-(global-set-key [mouse-2] 'xref-pop-marker-stack)
+(global-set-key [mouse-2] 'keyboard-escape-quit)
 (global-set-key [mouse-3] 'highlight-symbol-at-point-toggle)
-(global-set-key [mouse-8] 'next-error)
-(global-set-key [mouse-9] 'previous-error)
-(global-set-key (kbd "<C-mouse-4>") 'text-scale-increase)
-(global-set-key (kbd "<C-mouse-5>") 'text-scale-decrease)
-(global-set-key (kbd "<XF86Favorites>") 'next-error)
-(global-set-key (kbd "<s-XF86Mail>") '(lambda () (interactive) (shell-command
-                                                    "xdotool key alt+period")))
-
 
 (recentf-mode)
 (savehist-mode)
 (show-paren-mode)
 (global-anzu-mode)
 (which-function-mode)
-(delete-selection-mode)
+(delete-selection-mode 1)
 (menu-bar-mode 0)
 (auto-save-mode 0)
 (electric-indent-mode 0)
@@ -91,10 +79,9 @@
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
-(setenv "MANWIDTH" "178")
+(setenv "MANWIDTH" "193")
 (setenv "BASH_ENV" "~/.emacs.d/bashrc")
-(add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
-(add-to-list 'default-frame-alist '(tty-color-mode . -1))
+(add-to-list 'default-frame-alist '(font . "Source Code Pro-13"))
 
 
 (setq case-fold-search t)
@@ -133,7 +120,6 @@
 
 
 (add-hook 'Man-mode-hook 'delete-window)
-(add-hook 'c-mode-common-hook (lambda () (ggtags-mode)))
 (add-hook 'find-file-hook (lambda () (my-count-lines)))
 (add-hook 'after-make-frame-functions (lambda (frame) (when (display-graphic-p 
                            frame) (set-frame-parameter frame 'undecorated t))))
@@ -145,7 +131,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages '(expand-region w3m ggtags auto-complete anzu)))
+ '(package-selected-packages '(ggtags expand-region w3m auto-complete anzu)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -156,3 +142,27 @@
  '(minibuffer-prompt ((t nil))))
 
 (setq ggtags-update-on-save nil)
+
+(setq vc-follow-symlinks nil)
+
+(setq url-proxy-services
+   '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
+     ("http" . "127.0.0.1:3128")
+     ("https" . "127.0.0.1:3128")))
+
+(add-hook 'ggtags-mode-hook (lambda ()
+  (local-set-key [double-mouse-1] 'ggtags-find-tag-dwim)
+  (local-set-key [mouse-2] 'xref-pop-marker-stack)
+  (local-set-key [mouse-8] 'next-error)
+  (local-set-key [mouse-9] 'previous-error)))
+
+(add-hook 'minibuffer-setup-hook (lambda () (local-set-key [mouse-7] 'minibuffer-alt-backslash)))
+(add-hook 'completion-list-mode-hook (lambda ()
+  (local-set-key [mouse-2] 'keyboard-escape-quit)
+  (local-set-key [mouse-7] 'minibuffer-alt-backslash)))
+
+(defun mouse-imenu-complete () (interactive) (shell-command "xdotool key alt+i"))
+
+(add-hook 'c-mode-common-hook (lambda ()
+  (ggtags-mode)
+  (local-set-key [mouse-7] 'mouse-imenu-complete)))

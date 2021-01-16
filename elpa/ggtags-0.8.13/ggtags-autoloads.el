@@ -25,10 +25,10 @@ definition tags.
 (autoload 'ggtags-mode "ggtags" "\
 Toggle Ggtags mode on or off.
 
-If called interactively, enable Ggtags mode if ARG is positive, and
-disable it if ARG is zero or negative.  If called from Lisp,
-also enable the mode if ARG is omitted or nil, and toggle it
-if ARG is `toggle'; disable the mode otherwise.
+If called interactively, enable Ggtags mode if ARG is positive,
+and disable it if ARG is zero or negative.  If called from Lisp,
+also enable the mode if ARG is omitted or nil, and toggle it if
+ARG is `toggle'; disable the mode otherwise.
 
 \\{ggtags-mode-map}
 

@@ -771,7 +771,34 @@ source trees. See Info node `(global)gtags' for details."
       (compilation-start (concat (ggtags-program-path "gtags") " --explain")))))
 
 (defun ggtags-update-tags (&optional force)
-  (setq make-backup-files nil))
+  "Update GNU Global tag database.
+Do nothing if GTAGS exceeds the oversize limit unless FORCE.
+
+When called interactively on large (per `ggtags-oversize-limit')
+projects, the update process runs in the background without
+blocking emacs."
+  (interactive (progn
+                 (ggtags-check-project)
+                 ;; Mark project info expired.
+                 (setf (ggtags-project-timestamp (ggtags-find-project)) -1)
+                 (list 'interactive)))
+  (cond ((and (eq force 'interactive) (ggtags-project-oversize-p))
+         (ggtags-with-current-project
+           (with-display-buffer-no-window
+             (with-current-buffer (compilation-start "global -u")
+               ;; A hack to fool compilation mode to display `global
+               ;; -u finished' on finish.
+               (setq mode-name "global -u")
+               (add-hook 'compilation-finish-functions
+                         #'ggtags-update-tags-finish nil t)))))
+        ((or force (and (ggtags-find-project)
+                        (not (ggtags-project-oversize-p))
+                        (ggtags-project-dirty-p (ggtags-find-project))))
+         (ggtags-with-current-project
+           (ggtags-with-temp-message "`global -u' in progress..."
+             (ggtags-process-string "global" "-u")
+             (ggtags-update-tags-finish))))))
+
 (defun ggtags-update-tags-finish (&optional buf how)
   (if (and how buf (string-prefix-p "exited abnormally" how))
       (display-buffer buf)
@@ -1730,8 +1757,8 @@ ggtags: history match invalid, jump to first match instead")
     (define-key map "\M-}" 'ggtags-navigation-next-file)
     (define-key map "\M-{" 'ggtags-navigation-previous-file)
     (define-key map "\M-=" 'ggtags-navigation-start-file)
-;;    (define-key map "\M->" 'ggtags-navigation-last-error)
-;;    (define-key map "\M-<" 'first-error)
+    (define-key map "\M->" 'ggtags-navigation-last-error)
+    (define-key map "\M-<" 'first-error)
     ;; Note: shadows `isearch-forward-regexp' but it can still be
     ;; invoked with `C-u C-s'.
     (define-key map "\C-\M-s" 'ggtags-navigation-isearch-forward)
